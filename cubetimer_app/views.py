@@ -14,10 +14,7 @@ class SolveListCreate(generics.ListCreateAPIView):
         return Solve.objects.filter(solved_by=user)
     
     def perform_create(self, serializer):
-        if serializer.is_valid():
-            serializer.save(solved_by=self.request.user)
-        else:
-            print(serializer.errors)
+        serializer.save(solved_by=self.request.user)
 
 
 class SolveDelete(generics.DestroyAPIView):
