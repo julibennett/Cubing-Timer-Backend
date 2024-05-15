@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Solve
+from .models import Solve, Friendship
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,3 +18,12 @@ class SolveSerializer(serializers.ModelSerializer):
         fields = ['id', 'solvetime', 'event', 'date', 'solved_by']
         extra_kwargs = {'solved_by': {'read_only': True}}
 
+class FriendshipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Friendship
+        fields = ['id', 'creator', 'friend', 'created_at']
+
+    def validate(self, data):
+        if data['creator'] == data['friend']:
+            raise serializers.ValidationError("Users cannot be friends with themselves.")
+        return data
