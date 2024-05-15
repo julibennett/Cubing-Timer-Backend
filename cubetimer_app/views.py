@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .serializers import UserSerializer, SolveSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Solve
@@ -17,7 +18,8 @@ class SolveListCreate(generics.ListCreateAPIView):
         serializer.save(solved_by=self.request.user)
 
 
-class SolveDelete(generics.DestroyAPIView):
+class SolveDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Solve.objects.all()
     serializer_class = SolveSerializer
     permission_classes = [IsAuthenticated]
 
