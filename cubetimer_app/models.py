@@ -1,6 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.conf import settings
+
+class CustomUser(AbstractUser):
+    friends = models.ManyToManyField('self', through='Friendship', symmetrical=False, related_name='friends+')
+
 
 class Solve(models.Model):
     solvetime = models.FloatField()
@@ -13,11 +17,14 @@ class Solve(models.Model):
 
 
 class Friendship(models.Model):
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='friendship_creator', on_delete=models.CASCADE)
-    friend = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='friendship_friend', on_delete=models.CASCADE)
+    from_user = models.ForeignKey(CustomUser, related_name='friendships', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(CustomUser, related_name='+', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['creator', 'friend'], name='unique_friendship')
+            models.UniqueConstraint(fields=['from_user', 'to_user'], name='unique_friendship')
         ]
+
+    def __str__(self):
+        return f"{self.from_user.username} is friends with {self.to_user.username}"
