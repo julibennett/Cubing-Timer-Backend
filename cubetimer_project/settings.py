@@ -103,7 +103,6 @@ DATABASES = {
     }
 }
 
-# AUTH_USER_MODEL = 'cubetimer_app.CustomUser'
 
 
 # Password validation

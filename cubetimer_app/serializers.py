@@ -24,3 +24,10 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['user', 'bio', 'friends']
+
+    def update(self, instance, validated_data):
+        friends = validated_data.pop('friends', [])
+        instance = super().update(instance, validated_data)
+        if friends:
+            instance.friends.set(friends)
+        return instance

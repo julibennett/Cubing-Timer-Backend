@@ -14,7 +14,7 @@ class Solve(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True)
-    friends = models.ManyToManyField('self', symmetrical=True, blank=True, related_name='friend_set')
+    friends = models.ManyToManyField('self', symmetrical=True, blank=True)
 
     def __str__(self):
         return f'{self.user.username}\'s profile'
