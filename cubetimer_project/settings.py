@@ -103,6 +103,8 @@ DATABASES = {
     }
 }
 
+# AUTH_USER_MODEL = 'cubetimer_app.CustomUser'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

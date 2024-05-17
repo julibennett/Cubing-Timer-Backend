@@ -1,9 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import User
 from django.conf import settings
-
-class CustomUser(AbstractUser):
-    friends = models.ManyToManyField('self', symmetrical=True, related_name='my_friends', blank=True)
 
 class Solve(models.Model):
     solvetime = models.FloatField()
@@ -13,3 +10,11 @@ class Solve(models.Model):
 
     def __int__(self):
         return self.solvetime
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    bio = models.TextField(blank=True)
+    friends = models.ManyToManyField('self', symmetrical=True, blank=True, related_name='friend_set')
+
+    def __str__(self):
+        return f'{self.user.username}\'s profile'

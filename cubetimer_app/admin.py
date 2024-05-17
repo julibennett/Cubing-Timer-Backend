@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Solve, Friendship
+from .models import Solve, Profile
 
 admin.site.register(Solve)
-admin.site.register(Friendship)
+admin.site.register(Profile)
