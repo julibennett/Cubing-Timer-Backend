@@ -52,7 +52,7 @@ class UserSearchView(generics.ListAPIView):
 
 class ProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user.profile
@@ -85,7 +85,7 @@ class AddFriendView(APIView):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
         profile = request.user.profile
-        profile.friends.add(friend)
+        profile.friends.add(friend.profile)
         profile.save()
 
         return Response({"success": "Friend added successfully"}, status=status.HTTP_200_OK)
