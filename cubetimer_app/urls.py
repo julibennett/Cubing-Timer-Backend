@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserSearchView, ProfileView, UpdateProfile, ListFriends
+from .views import UserSearchView, ProfileView, UpdateProfile, ListFriends, AddFriendView
 
 urlpatterns = [
 path('solves/', views.SolveListCreate.as_view(), name='solve-list'),
@@ -8,4 +8,6 @@ path('solves/', views.SolveListCreate.as_view(), name='solve-list'),
     path('search-users/', UserSearchView.as_view(), name='search-users'),
     path('profile/', ProfileView.as_view(), name='profile-view'),  
     path('profile/update/', UpdateProfile.as_view(), name='update-profile'),  
-    path('profile/friends/', ListFriends.as_view(), name='list-friends'),]
+    path('profile/friends/', ListFriends.as_view(), name='list-friends'),
+    path('add-friend/', AddFriendView.as_view(), name='add-friend'),
+]
