@@ -19,6 +19,7 @@ class SolveSerializer(serializers.ModelSerializer):
         extra_kwargs = {'solved_by': {'read_only': True}}
 
 class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
     friends = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
 
     class Meta:
