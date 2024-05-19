@@ -89,3 +89,11 @@ class AddFriendView(APIView):
         profile.save()
 
         return Response({"success": "Friend added successfully"}, status=status.HTTP_200_OK)
+    
+class SolveChartData(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        solves = Solve.objects.filter(solved_by=request.user)
+        serializer = SolveSerializer(solves, many=True)
+        return Response(serializer.data)

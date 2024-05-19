@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserSearchView, ProfileView, UpdateProfile, ListFriends, AddFriendView
+from .views import UserSearchView, ProfileView, UpdateProfile, ListFriends, AddFriendView, SolveChartData
 
 urlpatterns = [
 path('solves/', views.SolveListCreate.as_view(), name='solve-list'),
@@ -10,4 +10,5 @@ path('solves/', views.SolveListCreate.as_view(), name='solve-list'),
     path('profile/update/', UpdateProfile.as_view(), name='update-profile'),  
     path('profile/friends/', ListFriends.as_view(), name='list-friends'),
     path('add-friend/', AddFriendView.as_view(), name='add-friend'),
+    path('solves/chart-data/', SolveChartData.as_view(), name='solve-chart-data'),
 ]
