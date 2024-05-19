@@ -12,3 +12,6 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path('api/', include('cubetimer_app.urls')),
 ]
+
+# curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE2MDg1MDcxLCJpYXQiOjE3MTYwNzc4NzEsImp0aSI6IjUyMDMxMDRkNjIwODQ4NWY5ODBmYjJjZDI0NWQ3MjNlIiwidXNlcl9pZCI6Mn0.0xbpjM4j5XTbo1svmhgDsbK1sC48tGhWFE9MPJuvtVM" http://127.0.0.1:8000/api/profile/
+#

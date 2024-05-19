@@ -99,7 +99,11 @@ WSGI_APPLICATION = 'cubetimer_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cubetimer'
+        'NAME': 'cubetimer',
+        'USER': 'juliannabennett',        # Replace with your actual database user
+        'PASSWORD': 'juliannabennett',# Replace with your actual database password
+        'HOST': 'localhost',           # Or the actual host of your database
+        'PORT': '5432',   
     }
 }
 

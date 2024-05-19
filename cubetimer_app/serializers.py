@@ -6,7 +6,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username']
-        # extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
@@ -20,15 +19,14 @@ class SolveSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    friends = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
-
+    friends = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all(), required=False)        
     class Meta:
         model = Profile
         fields = ['user', 'bio', 'friends']
 
-    def update(self, instance, validated_data):
-        friends = validated_data.pop('friends', [])
-        instance = super().update(instance, validated_data)
-        if friends:
-            instance.friends.set(friends)
-        return instance
+    # def update(self, instance, validated_data):
+    #     friends = validated_data.pop('friends', [])
+    #     instance = super().update(instance, validated_data)
+    #     if friends:
+    #         instance.friends.set(friends)
+    #     return instance
