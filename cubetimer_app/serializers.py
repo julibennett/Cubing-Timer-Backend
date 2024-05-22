@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Solve, Profile
+from .models import Solve
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,12 +18,12 @@ class SolveSerializer(serializers.ModelSerializer):
         fields = ['id', 'solvetime', 'event', 'date', 'solved_by']
         extra_kwargs = {'solved_by': {'read_only': True}}
 
-class ProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    friends = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all(), required=False)        
-    class Meta:
-        model = Profile
-        fields = ['user', 'bio', 'friends']
+# class ProfileSerializer(serializers.ModelSerializer):
+#     user = UserSerializer(read_only=True)
+#     friends = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all(), required=False)        
+#     class Meta:
+#         model = Profile
+#         fields = ['user', 'bio', 'friends']
 
     # def update(self, instance, validated_data):
     #     friends = validated_data.pop('friends', [])

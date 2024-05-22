@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import generics, permissions, status
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from .serializers import UserSerializer, SolveSerializer, ProfileSerializer
+from .serializers import UserSerializer, SolveSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Solve, Profile
+from .models import Solve
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -19,7 +19,6 @@ class SolveListCreate(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(solved_by=self.request.user)
 
-
 class SolveDetail(RetrieveUpdateDestroyAPIView):
     queryset = Solve.objects.all()
     serializer_class = SolveSerializer
@@ -28,7 +27,6 @@ class SolveDetail(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Solve.objects.filter(solved_by=user)
-    
 
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -36,15 +34,7 @@ class CreateUserView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
-        try:
-            user = serializer.save()
-            if not Profile.objects.filter(user=user).exists():
-                Profile.objects.create(user=user)
-        except Exception as e:
-            print("Error during user creation:", e)
-            raise
-
-
+        serializer.save()
 
 class UserSearchView(generics.ListAPIView):
     queryset = User.objects.all()
@@ -57,46 +47,6 @@ class UserSearchView(generics.ListAPIView):
             return User.objects.filter(username__icontains=username)
         return User.objects.none()
 
-class ProfileView(generics.RetrieveUpdateAPIView):
-    serializer_class = ProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_object(self):
-        return self.request.user.profile
-
-class UpdateProfile(generics.UpdateAPIView):
-    serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_object(self):
-        return self.request.user.profile
-
-class ListFriends(generics.ListAPIView):
-    serializer_class = UserSerializer  
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return self.request.user.profile.friends.all()
-    
-class AddFriendView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        friend_id = request.data.get('friend_id')
-        if not friend_id:
-            return Response({"error": "Friend ID not provided"}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            friend = User.objects.get(id=friend_id)
-        except User.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        profile = request.user.profile
-        profile.friends.add(friend.profile)
-        profile.save()
-
-        return Response({"success": "Friend added successfully"}, status=status.HTTP_200_OK)
-    
 class SolveChartData(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -104,3 +54,19 @@ class SolveChartData(APIView):
         solves = Solve.objects.filter(solved_by=request.user)
         serializer = SolveSerializer(solves, many=True)
         return Response(serializer.data)
+    
+class UserSolveChartData(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        solves = Solve.objects.filter(solved_by=user)
+        serializer = SolveSerializer(solves, many=True)
+        return Response(serializer.data)
+    
+# class UserDetailView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def get(self, request):
+#         serializer = UserSerializer(request.user)
+#         return Response(serializer.data)
