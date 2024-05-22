@@ -36,8 +36,15 @@ class CreateUserView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
-        user = serializer.save()
-        Profile.objects.create(user=user)
+        try:
+            user = serializer.save()
+            if not Profile.objects.filter(user=user).exists():
+                Profile.objects.create(user=user)
+        except Exception as e:
+            print("Error during user creation:", e)
+            raise
+
+
 
 class UserSearchView(generics.ListAPIView):
     queryset = User.objects.all()

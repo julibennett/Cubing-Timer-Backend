@@ -7,3 +7,4 @@ class CubetimerAppConfig(AppConfig):
 
     def ready(self):
         import cubetimer_app.signals
+        
