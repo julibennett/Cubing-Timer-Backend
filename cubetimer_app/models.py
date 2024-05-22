@@ -13,3 +13,9 @@ class Solve(models.Model):
     def __int__(self):
         return self.solvetime
 
+class StarredUser(models.Model):
+    user = models.ForeignKey(User, related_name='starred_users', on_delete=models.CASCADE)
+    starred_user = models.ForeignKey(User, related_name='starred_by', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'starred_user')

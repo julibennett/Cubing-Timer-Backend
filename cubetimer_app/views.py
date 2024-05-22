@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, serializers
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from .serializers import UserSerializer, SolveSerializer
+from .serializers import UserSerializer, SolveSerializer, StarredUserSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Solve
+from .models import Solve, StarredUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -63,6 +63,30 @@ class UserSolveChartData(APIView):
         solves = Solve.objects.filter(solved_by=user)
         serializer = SolveSerializer(solves, many=True)
         return Response(serializer.data)
+    
+class StarredUserListCreate(generics.ListCreateAPIView):
+    serializer_class = StarredUserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return StarredUser.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        if StarredUser.objects.filter(user=self.request.user, starred_user_id=serializer.validated_data['starred_user'].id).exists():
+            raise serializers.ValidationError("User already starred.")
+        serializer.save(user=self.request.user)
+
+class UnstarUser(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        starred_user_id = request.data.get('starred_user_id')
+        try:
+            starred_user = StarredUser.objects.get(user=request.user, starred_user_id=starred_user_id)
+            starred_user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except StarredUser.DoesNotExist:
+            return Response({"error": "Starred user not found."}, status=status.HTTP_404_NOT_FOUND)
     
 # class UserDetailView(APIView):
 #     permission_classes = [IsAuthenticated]
