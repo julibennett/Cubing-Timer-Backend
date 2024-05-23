@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Add a ManyToMany field to the User model for starred users
+
 User.add_to_class('starred_users', models.ManyToManyField(
     'self',
     through='cubetimer_app.StarredUser',
