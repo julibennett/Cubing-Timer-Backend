@@ -1,9 +1,9 @@
 from django.urls import path
 from . import views
-from .views import UserSearchView, SolveChartData, UserSolveChartData, StarredUserListCreate, UnstarUser
+from .views import UserSearchView, UserSolveChartData, StarredUserListCreate, UnstarUser, SolveChartData
 
 urlpatterns = [
-path('solves/', views.SolveListCreate.as_view(), name='solve-list'),
+    path('solves/', views.SolveListCreate.as_view(), name='solve-list'),
     path('solves/<int:pk>/', views.SolveDetail.as_view(), name='solve-detail'),
     path('search-users/', UserSearchView.as_view(), name='search-users'),
     path('solves/chart-data/', SolveChartData.as_view(), name='solve-chart-data'),
@@ -11,4 +11,3 @@ path('solves/', views.SolveListCreate.as_view(), name='solve-list'),
     path('starred-users/', StarredUserListCreate.as_view(), name='starred-users'),
     path('unstar-user/', UnstarUser.as_view(), name='unstar-user'),
 ]
-
