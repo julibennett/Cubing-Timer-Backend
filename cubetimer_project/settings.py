@@ -25,10 +25,10 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'cubetimer',
-            # 'USER': 'juliannabennett',
-            # 'PASSWORD': 'juliannabennett',
-            # 'HOST': 'localhost',
-            # 'PORT': '5432',
+            'USER': 'juliannabennett',
+            'PASSWORD': 'juliannabennett',
+            'HOST': 'localhost',
+            'PORT': '5432',
         }
     }
 
@@ -125,7 +125,10 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://cubetimer-frontend-fe950a9be4a3.herokuapp.com",
+]
 CORS_ALLOW_CREDENTIALS = True
 
 WHITENOISE_KEEP_ONLY_HASHED_FILES = True
