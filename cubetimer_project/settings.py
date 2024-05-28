@@ -26,7 +26,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'cubetimer',
             'USER': 'juliannabennett',
-            'PASSWORD': 'juliannabennett',
+            'PASSWORD': 'SailorGhoul1999!',
             'HOST': 'localhost',
             'PORT': '5432',
         }
