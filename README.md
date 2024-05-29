@@ -12,9 +12,12 @@ lets you view your stats like never before? Look no further than to **R U R' U'*
 ## Technologies Used:
 
 - Django REST Framework
+- Django
 - JWT 
 - CORS
 - Python
+- Gunicorn
+- PostgreSQL
 
 ## Links
 - [Live App!](https://cubetimer-frontend-fe950a9be4a3.herokuapp.com/login 'Live View')
